@@ -1,0 +1,45 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+
+# Enable extendened globbing (for advanced pattern matching)
+shopt -s extglob
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# Set command line mode to vi
+set -o vi
+
+# Set path
+if [[ -f $HOME/.path ]]; then
+	source $HOME/.path;
+fi;
+
+if [[ -f $HOME/.dotfiles/bash/colors ]]; then
+	source $HOME/.dotfiles/bash/colors;
+fi;
+
+if [[ -f $HOME/.dotfiles/bash/functions ]]; then
+	source $HOME/.dotfiles/bash/functions;
+fi;
+
+
+#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64:/homes/tl344/lib
+
+# TMPDIR is used by tmux to store its socket. If TMPDIR is not set, tmux uses the default /tmp, 
+# which unfortunately mounts to a different fs on the cluster nodes, causing tmux not to find 
+# any socket. To avoid this problem, set TMPDIR to a directory mounted on all nodes.
+export TMPDIR=$HOME/tmp
+
+# This is required by vim r plugin
+alias vi="vim --servername VIM"
+
+# Unsetting this variable avoids being
+# prompted for ssh passwords in an X11 window
+unset SSH_ASKPASS
+
+

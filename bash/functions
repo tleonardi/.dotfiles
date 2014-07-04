@@ -1,0 +1,79 @@
+function bob
+{
+   local N=$1
+   local P=$2
+   shift 2
+   echo bsub -q research-rh6 -M $N -n $P -R "'rusage[mem=$N]'" \'$*\'
+}
+
+function bbash
+{  local N=$1
+   local CPU=$2
+   shift 1
+   bsub -q research-rh6 -M $N -n $CPU -R "'rusage[mem=$N]'" -XF -Is /bin/bash
+}
+
+function cp_track
+{
+        if [ ! $# == 2 ]
+        then
+                echo "
+                Copies a file to /homes/tl344/public_html/browser_tracks and prints URL linking to it.
+                Usage: cp_track filename.bed trackName
+
+                "
+                return 1
+        fi
+
+        if test ! -f $1
+        then
+                echo "Can't find file $1."
+                return 1
+        fi
+
+        echo "track name='$2'" > /homes/tl344/public_html/browser_tracks/$1
+        cat $1 >> /homes/tl344/public_html/browser_tracks/$1
+        echo http://www.ebi.ac.uk/~tl344/browser_tracks/$1
+
+}
+
+function sendme()
+{
+        echo "There's a file for you" | mail -s "File from the farm: $1" -a $1 tleonardi@gmail.com
+}
+
+function ffn()
+{  echo -n > $HOME/.mycache
+   for f in $*; do
+      echo "$PWD/$f" | tee $HOME/.mycache
+   done
+}
+
+function dos2unix
+{
+        awk '{gsub("\r","\n"); print;}' $1
+}
+
+function tmux() {
+    local tmux=$(type -fp tmux)
+    case "$1" in
+        update-environment|update-env|env-update)
+            local v
+            while read v; do
+                if [[ $v == -* ]]; then
+                    unset ${v/#-/}
+                else
+                    # Add quotes around the argument
+                    v=${v/=/=\"}
+                    v=${v/%/\"}
+                    eval export $v
+                fi
+            done < <(tmux show-environment)
+            ;;
+        *)
+            $tmux "$@"
+            ;;
+    esac
+}
+
+
