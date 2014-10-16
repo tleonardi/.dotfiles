@@ -18,7 +18,7 @@ if [[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] ; then
                 fi
         fi
         # It would be much nicer to decide the colors based on the content of $LSF_JOBID!!
-        if [[ ! -z $LSB_JOBID ]] ; then LOGIN_NODE=1; fi;
+        if [[ -z $LSB_JOBID ]] ; then LOGIN_NODE=1; fi;
 
         if [[ "$LOGIN_NODE" == 1 ]] ;
         then

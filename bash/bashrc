@@ -27,8 +27,11 @@ if [[ -f $HOME/.dotfiles/bash/functions ]]; then
 	source $HOME/.dotfiles/bash/functions;
 fi;
 
+if [[ -f $HOME/.dotfiles/bash/functions ]]; then
+	source $HOME/.dotfiles/bash/bash_apparix;
+fi
 
-#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64:/homes/tl344/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64:/homes/tl344/lib
 
 # TMPDIR is used by tmux to store its socket. If TMPDIR is not set, tmux uses the default /tmp, 
 # which unfortunately mounts to a different fs on the cluster nodes, causing tmux not to find 
