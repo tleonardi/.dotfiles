@@ -33,8 +33,18 @@ set certificate_file = ~/.mutt/certificates
 #Stop asking to "move read messages to mbox"
 set move = no  
 
-# Keep imap connection alice
-set imap_keepalive = 900
+
+# Fine-tune IMAP connection
+
+# activate TLS
+set ssl_starttls=yes
+# always use SSL
+set ssl_force_tls=yes
+unset imap_passive 
+# How often to chek for new mail
+set mail_check=60
+# Keep imap connection alice (looks like Gmail violates the RFC and kills connections early)
+set imap_keepalive = 200
 
 # Do not copy sent mail.  Gmail smtp already does this.
 set copy = no
@@ -139,9 +149,9 @@ set status_format="%>-     Messages: %M - Unread: %u     "
 set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set nocp" -c "execute \"normal! ggO\<CR>\<Esc>k\""'
 
 # Configure the sidebar
-set sidebar_visible=no
-set sidebar_width=30
-set imap_check_subscribed=yes
+#set sidebar_visible=no
+#set sidebar_width=30
+#set imap_check_subscribed=yes
 
 # Solarized colors
 source $HOME/.dotfiles/mutt/mutt-colors-solarized-dark-16.muttrc
