@@ -1,0 +1,20 @@
+# Images
+image/jpg; ~/.dotfiles/mutt/view_attachment.sh %s jpg
+image/jpeg; ~/.dotfiles/mutt/view_attachment.sh %s jpg
+image/pjpeg; ~/.dotfiles/mutt/view_attachment.sh %s jpg
+image/png; ~/.dotfiles/mutt/view_attachment.sh %s png
+image/gif; ~/.dotfiles/mutt/view_attachment.sh %s gif
+
+# PDFs
+application/pdf; ~/.dotfiles/mutt/view_attachment.sh %s pdf
+
+# HTML
+text/html; ~/.dotfiles/mutt/view_attachment.sh %s html & ; test=test -n "$DISPLAY"; needsterminal;
+text/html; elinks -force-html %s;nametemplate=%s.html; copiousoutput;
+
+
+# Unidentified files
+application/octet-stream; ~/.dotfiles/mutt/view_attachment.sh %s "-"
+
+application/msword; ~/.dotfiles/mutt/view_attachment.sh %s "-" doc
+

@@ -39,3 +39,23 @@ if [[ -f $HOME/.dotfiles/vim/vimrc ]]; then
 else
 	echo "$HOME/.dotfiles/vim/vimrc: no such file";
 fi
+
+if [[ -f $HOME/.dotfiles/mutt/muttrc ]]; then
+	if [[ -f $HOME/.muttrc ]]; then
+		cp -L $HOME/.muttrc $HOME/.old_conf/muttrc_$NOW && rm $HOME/.muttrc;
+	fi;
+	echo "Linking $HOME/.muttrc to $HOME/.dotfiles/mutt/muttrc"
+	ln -s $HOME/.dotfiles/mutt/muttrc $HOME/.muttrc
+else
+	echo "$HOME/.dotfiles/mutt/muttrc: no such file";
+fi
+
+if [[ -f $HOME/.dotfiles/mutt/mailcap ]]; then
+	if [[ -f $HOME/.mailcap ]]; then
+		cp -L $HOME/.mailcap $HOME/.old_conf/mailcap_$NOW && rm $HOME/.mailcap;
+	fi;
+	echo "Linking $HOME/.mailcap to $HOME/.dotfiles/mutt/mailcap"
+	ln -s $HOME/.dotfiles/mutt/mailcap $HOME/.mailcap
+else
+	echo "$HOME/.dotfiles/mutt/mailcap: no such file";
+fi
