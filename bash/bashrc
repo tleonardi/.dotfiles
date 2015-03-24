@@ -45,4 +45,8 @@ alias vi="vim --servername VIM"
 # prompted for ssh passwords in an X11 window
 unset SSH_ASKPASS
 
+# source mySQL config
+if [[ -f $HOME/.mysql ]]; then
+	source $HOME/.mysql;
+fi
 
