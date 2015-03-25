@@ -63,6 +63,8 @@ set delete=yes
 # Don't ask if I want to append to mailbox
 set confirmappend=no
 
+# Weed headers and decode the message before piping. Useful for urlview
+set pipe_decode=yes
 
 # Gmail style keybindings
 bind  editor <space> noop
@@ -89,7 +91,7 @@ macro index,pager gl <change-folder>?				"Go to 'Label'"
 macro index,pager gi <change-folder>=INBOX<enter> 		"Go to inbox"
 macro index,pager gt "<change-folder>=[Google Mail]/Sent Mail<enter>"	"Go to 'Sent Mail'"
 macro attach W "<save-entry><bol>~/Downloads/<eol>" "Save to desktop"
-
+macro pager l "|urlview<enter>" "Call urlview"
 
 folder-hook "." 'bind index,pager i noop'
 folder-hook ".*All Mail" 'macro index,pager i "<untag-pattern>~A<enter><tag-thread><tag-prefix-cond><copy-message>=INBOX<enter>" "Move to inbox"'
