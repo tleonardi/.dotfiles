@@ -75,11 +75,11 @@ else
 fi
 
 if [[ -f $HOME/.dotfiles/mutt/urlview &&  OSX ]]; then
-	if [[ -f $HOME/.mailcap ]]; then
-		cp -L $HOME/.mailcap $HOME/.old_conf/mailcap_$NOW && rm $HOME/.mailcap;
+	if [[ -f $HOME/.urlview ]]; then
+		cp -L $HOME/.urlview $HOME/.old_conf/urlview_$NOW && rm $HOME/.urlview;
 	fi;
-	echo "Linking $HOME/.mailcap to $HOME/.dotfiles/mutt/mailcap"
-	ln -s $HOME/.dotfiles/mutt/mailcap $HOME/.mailcap
+	echo "Linking $HOME/.urlview to $HOME/.dotfiles/mutt/urlview"
+	ln -s $HOME/.dotfiles/mutt/urlview $HOME/.urlview
 else
-	echo "$HOME/.dotfiles/mutt/mailcap: no such file";
+	echo "$HOME/.dotfiles/mutt/urlview: no such file";
 fi
