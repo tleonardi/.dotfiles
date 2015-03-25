@@ -27,7 +27,7 @@ if [[ -f $HOME/.dotfiles/bash/functions ]]; then
 	source $HOME/.dotfiles/bash/functions;
 fi;
 
-if [[ -f $HOME/.dotfiles/bash/functions ]]; then
+if [[ -f $HOME/.dotfiles/bash/bash_apparix ]]; then
 	source $HOME/.dotfiles/bash/bash_apparix;
 fi
 
