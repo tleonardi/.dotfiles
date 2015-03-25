@@ -76,4 +76,47 @@ function tmux() {
     esac
 }
 
+require_clean_work_tree () {
 
+    if [[ -z "$1" ]]; then
+	DIR="."
+    else
+	DIR=$1
+    fi
+    if [[ ! -d "$DIR" ]]; then
+	echo >&2 $DIR is not a directory
+        return 1
+    fi
+    if [[ ! -d "$DIR/.git" ]]; then
+        echo >&2 "$DIR/.git does not exist"
+        return 1
+    fi
+
+    # Update the index
+    git --git-dir=$DIR/.git --work-tree=$DIR update-index -q --ignore-submodules --refresh
+    err=0
+
+    # Disallow unstaged changes in the working tree
+    if ! git  --git-dir=$DIR/.git --work-tree=$DIR diff-files --quiet --ignore-submodules --
+    then
+        echo >&2 "You have unstaged changes."
+        git  --git-dir=$DIR/.git --work-tree=$DIR diff-files --name-status -r --ignore-submodules -- >&2
+        err=1
+    fi
+
+    # Disallow uncommitted changes in the index
+    if ! git  --git-dir=$DIR/.git --work-tree=$DIR diff-index --cached --quiet HEAD --ignore-submodules --
+    then
+        echo >&2 "Your index contains uncommitted changes."
+        git  --git-dir=$DIR/.git --work-tree=$DIR diff-index --cached --name-status -r --ignore-submodules HEAD -- >&2
+        err=1
+    fi
+
+    if [ $err = 1 ]
+    then
+        echo >&2 "Please commit or stash them."
+        exit 1
+    else
+	exit 0
+    fi
+}

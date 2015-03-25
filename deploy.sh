@@ -4,7 +4,21 @@ if [[ -z $HOME ]]; then
 	exit 1;
 fi;
 
+# Check if the OS is OSX or Linux
+OSX=0
+uname -a | grep Darwin >/dev/null && OSX=1
+
 NOW=$(date +"%m_%d_%Y-%k_%M_%S")
+
+if [[ -f $HOME/.dotfiles/bash/functions ]]; then
+	source "$HOME/.dotfiles/bash/functions"
+else
+	echo "Can't source functions"
+	exit 1
+fi
+if require_clean_work_tree ~/.dotfiles; then
+	exit 1;
+fi
 
 mkdir -p $HOME/.old_conf
 
@@ -51,6 +65,16 @@ else
 fi
 
 if [[ -f $HOME/.dotfiles/mutt/mailcap ]]; then
+	if [[ -f $HOME/.mailcap ]]; then
+		cp -L $HOME/.mailcap $HOME/.old_conf/mailcap_$NOW && rm $HOME/.mailcap;
+	fi;
+	echo "Linking $HOME/.mailcap to $HOME/.dotfiles/mutt/mailcap"
+	ln -s $HOME/.dotfiles/mutt/mailcap $HOME/.mailcap
+else
+	echo "$HOME/.dotfiles/mutt/mailcap: no such file";
+fi
+
+if [[ -f $HOME/.dotfiles/mutt/urlview &&  OSX ]]; then
 	if [[ -f $HOME/.mailcap ]]; then
 		cp -L $HOME/.mailcap $HOME/.old_conf/mailcap_$NOW && rm $HOME/.mailcap;
 	fi;
