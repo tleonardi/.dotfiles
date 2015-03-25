@@ -9,7 +9,7 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 Plugin 'altercation/vim-colors-solarized.git'
-
+Plugin 'Vim-R-plugin'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
@@ -18,53 +18,71 @@ let vimrplugin_r_path = "/homes/tl344/tom/bin/bobR.sh"
 " Remap autocompletion to ctrl-space
 inoremap <Nul> <C-n>
 
-imap jj <Esc>
+" Do not connect to the X server to get window title
+" and clipboard. This dramatically speeds up vi startup
+set clipboard=exclude:.*
 
 " Remap SendSelection and Sendline to Leader-Space
 vmap <Space> <Plug>RDSendSelection
 nmap <Space> <Plug>RDSendLine
 
-" Set local leader
+" Allow backspace to delete indents, eol or before the start of insert
 set backspace=indent,eol,start
 
+" Set leader and local leader
 let maplocalleader = "\\"
+let mapleader = ","
+
 " Disable the automatic replacement of _ with <- This is to avoid problems
 " when pasting code that contains _
 let vimrplugin_assign = 0
+" Wait for R to load before time out
+let vimrplugin_vimcom_wait = 60000
 
+" Highlight searches
 set hlsearch
+
+" Line numbers
 set nu
+
 " Highlight search pattern as you type
 set incsearch
 
-" If you press enter after a search the search pattern is cleared
-nnoremap <CR> :noh<CR><CR>
-" invoke as :call Movl(start, end)
-function Movl (start, end)
-    let s = a:start
-    let e = a:end
-    normal mp
-    exe s.','.e.'d' 
-    normal 'p
-    normal p
-endfunction
-
 " Makes mouse scrolling and selecting work
 set mouse=a
-" This line solves the problem of clicks past the 220th column not being
-" caught
+" Allow mouse clicks past the 220th column
 set ttymouse=sgr
 
 " Solarized color theme
 syntax enable
 set background=dark
 let g:solarized_termtrans=1
-"set t_Co=16
 colorscheme solarized
 
-
+" My mappings 
 " Disable the arrows so that i stick my hands to the home row
- noremap   <Up>     <NOP>
- noremap   <Down>   <NOP>
- noremap   <Left>   <NOP>
-noremap   <Right>  <NOP>
+inoremap <Up> <NOP>
+inoremap <Down> <NOP>
+inoremap <Left> <NOP>
+inoremap <Right> <NOP>
+nnoremap <Up> <NOP>
+nnoremap <Down> <NOP>
+nnoremap <Left> <NOP>
+nnoremap <Right> <NOP>
+
+inoremap jj <esc>
+
+" If you press enter after a search the search pattern is cleared
+nnoremap <CR> :noh<CR><CR>
+
+" Edit .vimrc in a split pane
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+
+" Source .vimrc
+nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" Toggle line numbers
+nnoremap <leader>n :set nu!<cr>
+
+
+
