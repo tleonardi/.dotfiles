@@ -115,8 +115,8 @@ require_clean_work_tree () {
     if [ $err = 1 ]
     then
         echo >&2 "Please commit or stash them."
-        exit 1
+        return 1
     else
-	exit 0
+	return 0
     fi
 }

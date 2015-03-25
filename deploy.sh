@@ -16,7 +16,7 @@ else
 	echo "Can't source functions"
 	exit 1
 fi
-if require_clean_work_tree ~/.dotfiles; then
+if ! require_clean_work_tree ~/.dotfiles; then
 	exit 1;
 fi
 
