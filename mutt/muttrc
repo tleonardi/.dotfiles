@@ -5,8 +5,6 @@ source ~/.muttauth
 
 # Signature file
 set signature="~/.signature"
-# Place signature above quote
-set sig_on_top=yes
 
 # Use address in To: as From: for reply
 set reverse_name
@@ -73,6 +71,8 @@ bind  index,pager d noop
 bind  generic     x  tag-entry		#Select Conversation
 bind  index       x  tag-thread		#Select Conversation
 bind  pager       x  tag-message	#Select Conversation
+bind  index	  q  noop
+bind  index       Q  quit
 bind  compose p postpone-message
 bind  index,pager s  flag-message	#Star a message
 macro index,pager +  "<copy-message>=[Google Mail]/Important<enter><enter>" "Mark as important"
@@ -105,6 +105,7 @@ folder-hook "." 'macro pager e  "<exit><untag-pattern>~A<enter><tag-thread><tag-
 folder-hook ".*All Mail" 'bind index,pager e noop'
 
 
+
 # Up and Down arrows to navigate inside email
 bind pager <up> previous-line
 bind pager <down> next-line
@@ -128,8 +129,12 @@ set markers=no
 set pager_index_lines= 15 
 
 # Thread sorting
-set sort = threads
-set sort_aux = reverse-last-date-received
+#set sort = threads
+#set sort_aux = last-date-received
+
+set sort = 'threads'
+set sort_aux = 'reverse-last-date-received'
+
 set uncollapse_jump
 #set sort_re 
 set strict_threads=yes
