@@ -1,0 +1,46 @@
+[SpamFilter]
+[KillThreadsFilter]
+[ListMailsFilter]
+[SentMailsFilter]
+sent_tag = sent
+[ArchiveSentMailsFilter]
+[InboxFilter]
+[FolderNameFilter]
+folder_explicit_list = LowPriority Junk Logs Trash
+folder_transforms = Junk:spam
+
+[Filter.1]
+query = tag:lists/for-sale
+tags = -lists;-inbox
+message = For-sale list
+
+[Filter.2]
+query = tag:move2inbox AND folder:itm6/INBOX
+tags = -move2inbox
+message = Remove move2inbox tag
+
+[Filter.3]
+query = tag:inbox AND folder:itm6/Archive AND NOT tag:move2inbox
+tags = -inbox
+message = Remove inbox tag from messages in archive
+
+[Filter.4]
+query = tag:inbox AND folder:itm6/Trash AND NOT tag:move2inbox
+tags = -inbox
+message = Remove inbox tag from messages in Trash
+
+[Filter.5]
+query = tag:Logs
+tags = -inbox
+message = Remove Logs from Inbox
+
+[MailMover]
+folders = itm6/INBOX itm6/Junk itm6/Archive itm6/INBOX.LowPriority
+max_age = 30
+
+# rules
+itm6/INBOX = 'tag:spam':itm6/Junk 'NOT tag:inbox AND NOT tag:spam':itm6/Archive
+itm6/INBOX.LowPriority = 'tag:spam':itm6/Junk 'NOT tag:inbox AND NOT tag:spam':itm6/Archive
+itm6/Junk = 'NOT tag:spam AND tag:inbox':itm6/INBOX 'NOT tag:spam':itm6/Archive
+itm6/Trash = 'NOT tag:spam AND tag:Trash':itm6/Trash 'NOT tag:Trash':itm6/Archive
+itm6/Archive = 'tag:move2inbox':itm6/INBOX
