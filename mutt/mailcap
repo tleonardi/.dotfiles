@@ -12,6 +12,7 @@ application/pdf; ~/.dotfiles/mutt/view_attachment.sh %s pdf
 text/html; ~/.dotfiles/mutt/view_attachment.sh %s html & ; test=test -n "$DISPLAY"; needsterminal;
 text/html; elinks -force-html %s;nametemplate=%s.html; copiousoutput;
 
+text/plain; ~/.dotfiles/mutt/view_attachment.sh %s "-" /Applications/TextWrangler.app
 
 # Unidentified files
 application/octet-stream; ~/.dotfiles/mutt/view_attachment.sh %s "-"
