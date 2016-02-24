@@ -1,0 +1,18 @@
+#!/bin/bash
+/usr/local/bin/afew --tag --new
+PRECOUNT=$(cat $(/usr/local/bin/notmuch config get database.path)/.inbox.count)
+NEWCOUNT=$(/usr/local/bin/notmuch count tag:inbox)
+if [[ $NEWCOUNT -gt $PRECOUNT ]]; then
+	/Users/tleonardi/bin/notify -t "New Mail" -m "You have new messages" -s Morse
+fi
+# After moving messages (offlineimap pre-hook)
+# and tagging new messages (previous line)
+# retag all messages with inbox or move2inbox tags.
+# This is necessary so that if a message in inbox has
+# been archived by the webmail or K9 we remove the inbox
+# tag.
+# We could just tag all messages every time, but it too slow
+# It might be better to combine these tow lines in something like
+# /usr/local/bin/afew -t tag:new OR tag:inbox OR tag:move2inbox
+# but it needs some testing
+/usr/local/bin/afew -t tag:inbox OR tag:move2inbox

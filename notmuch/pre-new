@@ -1,0 +1,4 @@
+#!/bin/bash
+
+/usr/local/bin/notmuch count tag:inbox > $(/usr/local/bin/notmuch config get database.path)/.inbox.count
+

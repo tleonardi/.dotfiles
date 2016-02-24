@@ -5,11 +5,16 @@ OSX=0
 uname -a | grep Darwin >/dev/null && OSX=1
 
 if [[ $OSX -eq 1 ]]; then
-   alias grep="grep --colour=auto"
-   alias ls="ls -G"
-   PS1="$(echo '\[\033[01;31m\]\u@\h')\[\033[01;34m\] \w \$\[\033[00m\] "
-   export LSCOLORS=ExFxBxDxCxegedabagacad 
-   export CLICOLOR=YES
+   PS1="$(echo '\[\033[01;31m\]\u@\h')\[\033[00;34m\] \w \$\[\033[0;00m\] "
+   if [[ -f /usr/local/bin/gls ]]; then
+	alias ls="gls --color=auto"
+	alias grep="/usr/bin/grep --colour=auto"
+	eval $(gdircolors -b ~/.dir_colors)
+   else
+   	alias ls="ls -G"
+   	export LSCOLORS=ExFxBxDxCxegedabagacad 
+   	export CLICOLOR=YES
+   fi
 
 else
    type -P dircolors >/dev/null && match_lhs=$(dircolors --print-database)

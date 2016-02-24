@@ -1,0 +1,28 @@
+[general]
+
+# List of accounts to be synced, separated by a comma.
+accounts = itm6
+pythonfile=~/.dotfiles/mutt/offlineimap.py
+realdelete= no
+
+[Account itm6]
+localrepository = itm6-local
+remoterepository = itm6-remote
+# Status cache. Default is plain, which eventually becomes huge and slow.
+status_backend = sqlite
+postsynchook = ~/.dotfiles/offlineimap/offlineimap-postsync.sh
+presynchook = ~/.dotfiles/offlineimap/offlineimap-presync.sh
+
+[Repository itm6-local]
+type = Maildir
+# Where should the mail be placed?
+localfolders = ~/.mail/itm6
+
+[Repository itm6-remote]
+# Remote repos can be IMAP or Gmail, the latter being a preconfigured IMAP.
+type = IMAP
+remotehost = itm6.xyz
+remoteuser = tom@itm6.xyz
+remotepasseval = get_keychain_pass(account="tom@itm6.xyz", server="imap.itm6.xyz")
+ssl = yes
+sslcacertfile = ~/cert.pem

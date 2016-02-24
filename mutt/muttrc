@@ -1,51 +1,17 @@
-# Source a file with login credentials
-# and personal info (from, realname, alternates)
-# this would be much better: https://wiki.archlinux.org/index.php/mutt#Passwords_management
-source ~/.muttauth
-
 # Signature file
 set signature="~/.signature"
 
 # Use address in To: as From: for reply
 set reverse_name
 
-# REMOTE GMAIL FOLDERS
-set folder = "imaps://imap.gmail.com:993"
-set spoolfile = "+INBOX"
-set postponed ="+[Google Mail]/Drafts"
-
-# This variable requires the trash patch
-# set trash = "+[Google Mail]/All Mail"
-
-# Don't save a local copy of every message
-unset record 
-
 # Required to send mail on Yosemite
 set smtp_authenticators = 'gssapi:login'
 
 # Cache and certificates
 set header_cache = ~/.mutt/cache/headers
-set message_cachedir = ~/.mutt/cache/bodies
 set certificate_file = ~/.mutt/certificates
-
 #Stop asking to "move read messages to mbox"
 set move = no  
-
-
-# Fine-tune IMAP connection
-
-# activate TLS
-set ssl_starttls=yes
-# always use SSL
-set ssl_force_tls=yes
-unset imap_passive 
-# How often to chek for new mail
-set mail_check=60
-# Keep imap connection alice (looks like Gmail violates the RFC and kills connections early)
-set imap_keepalive = 200
-
-# Do not copy sent mail.  Gmail smtp already does this.
-set copy = no
 
 # Mailcap
 set mailcap_path = ~/.mailcap
@@ -61,58 +27,44 @@ set delete=yes
 # Don't ask if I want to append to mailbox
 set confirmappend=no
 
+# Don't ask if I wan to include the message I'm replying to.
+set include
+
 # Weed headers and decode the message before piping. Useful for urlview
 set pipe_decode=yes
 
-# Gmail style keybindings
-bind  editor <space> noop
-bind  index,pager c  mail 		#Compose
-bind  index,pager d noop
-bind  generic     x  tag-entry		#Select Conversation
-bind  index       x  tag-thread		#Select Conversation
-bind  pager       x  tag-message	#Select Conversation
-bind  index	  q  noop
-bind  index       Q  quit
-bind  compose p postpone-message
-bind  index,pager s  flag-message	#Star a message
-macro index,pager +  "<copy-message>=[Google Mail]/Important<enter><enter>" "Mark as important"
-macro index,pager !  "<save-message>=[Google Mail]/Spam<enter><enter>" "Report spam"
-bind  index,pager a  group-reply	#Reply all
-bind  index,pager \# delete-thread	#Delete
-bind  index - collapse-thread
-bind  index _ collapse-all
-macro index,pager I  "<clear-flag>N"	"Mark as read"
-macro index,pager U  "<set-flag>N"	"Mark as unread"
-macro index,pager ga "<change-folder>=[Google Mail]/All Mail<enter>"	"Go to all mail"
-macro index,pager gs "<change-folder>=[Google Mail]/Starred<enter>"	"Go to 'Starred'"
-macro index,pager gd "<change-folder>=[Google Mail]/Drafts<enter>"	"Go to 'Drafts'"
-macro index,pager g+ "<change-folder>=[Google Mail]/Important<enter>"	"Go to 'Important'"
-macro index,pager gl <change-folder>?				"Go to 'Label'"
-macro index,pager gi <change-folder>=INBOX<enter> 		"Go to inbox"
-macro index,pager gt "<change-folder>=[Google Mail]/Sent Mail<enter>"	"Go to 'Sent Mail'"
-macro attach W "<save-entry><bol>~/Downloads/<eol>" "Save to desktop"
-macro pager l "|urlview<enter>" "Call urlview"
+# Refresh mailbox every 10 seconds
+set timeout=10
 
-folder-hook "." 'bind index,pager i noop'
-folder-hook ".*All Mail" 'macro index,pager i "<untag-pattern>~A<enter><tag-thread><tag-prefix-cond><copy-message>=INBOX<enter>" "Move to inbox"'
-
-# Commands to delete emails
-# In any folder apart for All Mail, e deletes the message
-# In Gmail, this moves the message to All Mail and/or remove the star/important flag.
-# In All Mail, e does nothing. To really delete a message it should be moved to the trash
-folder-hook "." 'macro index e  "<untag-pattern>~A<enter><tag-thread><tag-prefix-cond><delete-message><limit>!~D<enter>" "Archive conversation"'
-folder-hook "." 'macro pager e  "<exit><untag-pattern>~A<enter><tag-thread><tag-prefix-cond><delete-message><limit>!~D<enter>" "Archive conversation"'
-folder-hook ".*All Mail" 'bind index,pager e noop'
+# Keybindings
+bind  pager     	<space>	half-down
+bind  pager		G	top
+bind  pager		gg	bottom
+bind  index,pager	c	mail 	
+bind  index,pager	d	noop
+bind  index,pager	u	noop
+bind  generic     	x	tag-entry		
+bind  index     	x	tag-thread	
+bind  pager		x	tag-message
+bind  index		q	noop
+bind  index,pager	s	noop
+bind  index		Q	quit
+bind  compose		p	postpone-message
+bind  compose		g	pgp-menu
+bind  index,pager 	a	group-reply
+bind  index 		-	collapse-thread
+bind  index		_	collapse-all
+macro attach		W	"<save-entry><bol>~/Downloads/<eol>" "Save to desktop"
+bind attach o  view-mailcap
+macro pager		l	"|urlview<enter>" "Call urlview"
+bind pager		<up>	previous-line
+bind pager		<down>	next-line
+bind pager		k	previous-line
+bind pager		j	next-line
 
 
-
-# Up and Down arrows to navigate inside email
-bind pager <up> previous-line
-bind pager <down> next-line
-
-# Goobook for addresses
-set query_command="goobook query '%s'"
-#macro index,pager a "<pipe-message>goobook add<return>" "add sender to google contacts"
+# addrlookup for addresses
+set query_command="/Users/tleonardi/bin/notmuch-addrlookup --mutt '%s'"
 bind editor <Tab> complete-query
 
 # Make email headers more readable
@@ -126,39 +78,60 @@ unignore x-mailing-list: posted-to:
 set markers=no
 
 # Number of lines of index when in pages
-set pager_index_lines= 15 
+set pager_index_lines=8
 
 # Thread sorting
-#set sort = threads
-#set sort_aux = last-date-received
-
 set sort = 'threads'
 set sort_aux = 'reverse-last-date-received'
 
+# Jump to the next unread message, if any, when the current thread is uncollapsed
 set uncollapse_jump
-#set sort_re 
+
+# Start with all messaged collapsed
+#folder-hook . "push <collapse-all>\n"
+
+# Do not collpase threads with unread messages
+unset collapse_unread
+
+# Use the In-Reply-To and References fields for threading
 set strict_threads=yes
+
 # Don't mark old messages
 set mark_old=no
+
+# Don't display "#" at the beginning of wrapped lines
+unset markers
+
 # Date format
 set date_format="%d/%m/%y %H:%M"
+
 # No noise please
 set beep=no
+
 # Nicely format emails in the index with count of how many
 # messages are in a thread (only when thread is collapsed)
 set index_format="%4C %Z %D %-25.25L %s %?M?(%M)?"
+
 # Don't ask to recall posponed messages every time
 set recall=no
+
 # Set the status bar
-set status_format="%>-     Messages: %M - Unread: %u     "
+set status_format="%f %>-     Messages: %M - Unread: %u     "
 
 # Use vim as editor
-set editor='vim + -c "set textwidth=72" -c "set wrap" -c "set nocp" -c "execute \"normal! ggO\<CR>\<Esc>k\""'
+set editor='vim + -c "set filetype=mail" 
 
-# Configure the sidebar
-#set sidebar_visible=no
-#set sidebar_width=30
-#set imap_check_subscribed=yes
+# f=f 
+set text_flowed
+
+set mbox_type = Maildir
+set folder = ~/.mail
 
 # Solarized colors
-source $HOME/.dotfiles/mutt/mutt-colors-solarized-dark-16.muttrc
+source $HOME/.dotfiles/mutt/mutt-colors-solarized-light-16.muttrc
+
+# Load mutt-kz configuration
+source $HOME/.dotfiles/mutt/mutt-kz.rc
+
+# Load GPG configuration
+source $HOME/.dotfiles/mutt/gpg.rc

@@ -1,0 +1,91 @@
+set spoolfile     = +itm6/INBOX
+set postponed     = "+itm6/Drafts"
+set realname = "Tommaso Leonardi"
+set from = "tom@itm6.xyz"
+set use_envelope_from = yes
+alternates "tl344@cam.ac.uk|tl344@ebi.ac.uk|tleonardi@gmail.com"
+
+
+# Virtual Mailboxes
+set nm_query_type = threads
+set virtual_spoolfile = yes
+set nm_default_uri = "notmuch:///Users/tleonardi/.mail"
+virtual-mailboxes "Inbox" "notmuch://?query=tag:inbox AND NOT tag:LowPriority&type=threads"
+virtual-mailboxes "LowPriority" "notmuch://?query=tag:LowPriority AND tag:inbox&type=threads"
+virtual-mailboxes "TODO" "notmuch://?query=tag:todo&type=threads"
+virtual-mailboxes "Flagged" "notmuch://?query=tag:flagged&type=threads"
+virtual-mailboxes "Logs" "notmuch://?query=tag:Logs&type=threads"
+virtual-mailboxes "Lists" "notmuch://?query=tag:lists AND tag:inbox&type=threads"
+virtual-mailboxes "Sent" "notmuch://?query=tag:sent&type=messages"
+virtual-mailboxes "Spam" "notmuch://?query=tag:spam&type=messages"
+virtual-mailboxes "Archive" "notmuch://?query=*"
+
+#set index_format="%4C %Z %?GI?%GI& ? %[%d/%b]  %-16.15F %?M?(%3M)&     ? %s %> %?g?%g?"
+set index_format="%4C %Z %D %-25.25L %s %?M?(%M)?"
+
+# Sidebar
+	set sidebar_width	= 25
+	set sidebar_visible	= yes
+	set sort_sidebar        = unsorted
+	color sidebar_new yellow default
+	bind index <left> sidebar-prev
+	bind index <right> sidebar-next
+	bind index <space> sidebar-open
+	bind index <Esc>S sidebar-toggle
+
+# Navigation Macros
+# We need the move2inbox tag for the smooth
+# operation with other clients (e.g. webmail, K9)
+# When an external client moves a message to 
+# the archive, it still has the Inbox tag.
+macro index,pager e "<untag-pattern>~A<enter><tag-thread><tag-prefix-cond><modify-labels-then-hide>-inbox -move2inbox\n<sync-mailbox>" "Archive"
+macro index,pager i "<modify-labels>+inbox +move2inbox -LowPriority\n<sync-mailbox>" "Move to Inbox"
+macro index,pager E "<tag-prefix-cond><modify-labels-then-hide>-inbox\n<sync-mailbox>" "Archive"
+macro index,pager S "<modify-labels-then-hide>+spam -inbox\n<sync-mailbox>" "Spam"
+macro index,pager U "<modify-labels-then-hide>-spam\n<sync-mailbox>" "Not Spam"
+macro index,pager t "<modify-labels>+todo\n<sync-mailbox>" "Mark as TODO"
+bind index	/	vfolder-from-query
+
+# TODO
+folder-hook . 'macro index,pager t "<modify-labels>+todo\n<sync-mailbox>" "Mark as TODO"'
+folder-hook tag:todo 'macro index,pager t "<untag-pattern>~A<enter><tag-thread><tag-prefix-cond><modify-labels-then-hide>-todo\n<sync-mailbox>" "Remove from TODO"'
+
+
+#Add messages stored to the mutt record (see $record in the mutt docs)
+#also to notmuch DB. If you reply to an email then the new email inherits
+#tags from the original email.
+set nm_record = yes
+
+# Afew already does this, but it doesn't hurt to do it already here
+set nm_record_tags = sent
+
+set record        = +itm6/Sent
+
+# Movement commands
+set copy = yes
+
+
+# SMTP settings
+# Each file needs to contain the following
+# 	set smtp_url = smtp://tom@itm6.xyz@itm6.xyz:587
+# 	set smtp_pass = `security find-generic-password -s imap.itm6.xyz -a tom@itm6.xyz -w`
+
+# Default
+source ~/.dotfiles/mutt/.itm6.smtp
+
+# This allows to change the From address and update the SMTP settings
+macro compose 1 "<edit-from><kill-line>Tommaso Leonardi <tom@itm6.xyz><enter><enter-command>source ~/.dotfiles/mutt/.itm6.smtp<enter>"
+macro compose 2 "<edit-from><kill-line>Tommaso Leonardi <tleonardi@gmail.com><enter><enter-command>source ~/.dotfiles/mutt/.gmail.smtp<enter>"
+macro compose 3 "<edit-from><kill-line>Tommaso Leonardi <tl344@cam.ac.uk><enter><enter-command>source ~/.dotfiles/mutt/.cam.smtp<enter>"
+macro compose 4 "<edit-from><kill-line>Tommaso Leonardi <tl344@ebi.ac.uk><enter><enter-command>source ~/.dotfiles/mutt/.ebi.smtp<enter>"
+
+# These hooks set the SMTP correctly when replying from a specific address
+send-hook '~f tom@itm6.xyz' 'source ~/.dotfiles/mutt/.itm6.smtp'
+send-hook '~f tom@itm6.xyz' 'my_hdr From: Tommaso Leonardi <tom@itm6.xyz>'
+send-hook '~f tleonardi@gmail.com' 'source ~/.dotfiles/mutt/.gmail.smtp'
+send-hook '~f tleonardi@gmail.com' 'my_hdr From: Tommaso Leonardi <tleonardi@gmail.com>'
+send-hook '~f tl344@cam.ac.uk' 'source ~/.dotfiles/mutt/.cam.smtp'
+send-hook '~f tl344@cam.ac.uk' 'my_hdr From: Tommaso Leonardi <tl344@cam.ac.uk>'
+send-hook '~f tl344@ebi.ac.uk' 'source ~/.dotfiles/mutt/.ebi.smtp'
+send-hook '~f tl344@ebi.ac.uk' 'my_hdr From: Tommaso Leonardi <tl344@ebi.ac.uk>'
+
