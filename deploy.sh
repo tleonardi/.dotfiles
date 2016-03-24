@@ -85,7 +85,7 @@ else
 fi
 
 if [[ -f $HOME/.dotfiles/afew/config &&  OSX ]]; then
-        if [[ -f $HOME/ ]]; then
+        if [[ -f $HOME/.config/afew/config ]]; then
                 cp -L $HOME/.config/afew/config $HOME/.old_conf/afew.config_$NOW && rm $HOME/.config/afew/config
         fi;
         echo "Linking afew config"
@@ -95,7 +95,7 @@ else
 fi
 
 if [[ -f $HOME/.dotfiles/offlineimap/offlineimaprc &&  OSX ]]; then
-        if [[ -f $HOME/ ]]; then
+        if [[ -f $HOME/.offlineimaprc ]]; then
                 cp -L $HOME/.offlineimaprc $HOME/.old_conf/afew.config_$NOW && rm $HOME/.offlineimaprc
         fi;
         echo "Linking offlineimap config"
@@ -105,7 +105,7 @@ else
 fi
 
 if [[ -f $HOME/.dotfiles/notmuch/notmuch-config &&  OSX ]]; then
-        if [[ -f $HOME/ ]]; then
+        if [[ -f $HOME/.notmuch-config ]]; then
                 cp -L $HOME/.notmuch-config $HOME/.old_conf/notmuch_$NOW && rm $HOME/.notmuch-config
         fi;
         echo "Linking notmuch config"
@@ -115,7 +115,7 @@ else
 fi
 
 if [[ -f $HOME/.dotfiles/notmuch/post-new &&  OSX ]]; then
-        if [[ -f $HOME/ ]]; then
+        if [[ -f $HOME/.mail/.notmuch/hooks/post-new ]]; then
                 cp -L $HOME/.mail/.notmuch/hooks/post-new $HOME/.old_conf/notmuch_post-new && rm $HOME/.mail/.notmuch/hooks/post-new
         fi;
         echo "Linking notmuch post-new config"
@@ -125,7 +125,7 @@ else
 fi
 
 if [[ -f $HOME/.dotfiles/notmuch/pre-new &&  OSX ]]; then
-        if [[ -f $HOME/ ]]; then
+        if [[ -f $HOME/.mail/.notmuch/hooks/pre-new ]]; then
                 cp -L $HOME/.mail/.notmuch/hooks/pre-new $HOME/.old_conf/notmuch_pre-new && rm $HOME/.mail/.notmuch/hooks/pre-new
         fi;
         echo "Linking notmuch pre-new config"

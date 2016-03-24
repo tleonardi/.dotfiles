@@ -64,7 +64,7 @@ bind pager		j	next-line
 
 
 # addrlookup for addresses
-set query_command="/Users/tleonardi/bin/notmuch-addrlookup --mutt '%s'"
+set query_command="/Users/tleonardi/bin/notmuch-addrlookup --mutt '%s' | perl -pe 's/\\\"|\\\\//g'"
 bind editor <Tab> complete-query
 
 # Make email headers more readable
