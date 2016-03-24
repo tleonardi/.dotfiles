@@ -16,7 +16,7 @@ set move = no
 # Mailcap
 set mailcap_path = ~/.mailcap
 auto_view text/html
-alternative_order text/plain text/enriched text/html
+alternative_order text/html text/plain text/enriched 
 
 # Don't ask To, Subject, etc when replying
 set fast_reply
@@ -85,7 +85,7 @@ set sort = 'threads'
 set sort_aux = 'reverse-last-date-received'
 
 # Jump to the next unread message, if any, when the current thread is uncollapsed
-set uncollapse_jump
+# set uncollapse_jump
 
 # Start with all messaged collapsed
 #folder-hook . "push <collapse-all>\n"

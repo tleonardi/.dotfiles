@@ -15,6 +15,7 @@ virtual-mailboxes "LowPriority" "notmuch://?query=tag:LowPriority AND tag:inbox&
 virtual-mailboxes "TODO" "notmuch://?query=tag:todo&type=threads"
 virtual-mailboxes "Flagged" "notmuch://?query=tag:flagged&type=threads"
 virtual-mailboxes "Logs" "notmuch://?query=tag:Logs&type=threads"
+virtual-mailboxes "Travel" "notmuch://?query=tag:Travel&type=threads"
 virtual-mailboxes "Lists" "notmuch://?query=tag:lists AND tag:inbox&type=threads"
 virtual-mailboxes "Sent" "notmuch://?query=tag:sent&type=messages"
 virtual-mailboxes "Spam" "notmuch://?query=tag:spam&type=messages"
