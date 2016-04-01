@@ -84,5 +84,8 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 " Toggle line numbers
 nnoremap <leader>n :set nu!<cr>
 
+" Toggle paste mode
+nnoremap <leader>p :set paste!<cr>
+
 
 
