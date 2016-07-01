@@ -88,7 +88,7 @@ set sort_aux = 'reverse-last-date-received'
 # set uncollapse_jump
 
 # Start with all messaged collapsed
-#folder-hook . "push <collapse-all>\n"
+#folder-hook . "exec collapse-all"
 
 # Do not collpase threads with unread messages
 unset collapse_unread

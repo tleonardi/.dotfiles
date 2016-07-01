@@ -10,6 +10,7 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'altercation/vim-colors-solarized.git'
 Plugin 'Vim-R-plugin'
+Plugin 'lervag/vimtex'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
@@ -87,5 +88,29 @@ nnoremap <leader>n :set nu!<cr>
 " Toggle paste mode
 nnoremap <leader>p :set paste!<cr>
 
+" Spelling
+set spelllang=en_gb
+set spellfile=$HOME/.vim/spell/en.utf-8.add
 
+let g:tex_flavor = 'latex'
+let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+ let g:vimtex_view_general_options = '-r @line @pdf @tex'
 
+ " This adds a callback hook that updates Skim after compilation
+ let g:vimtex_latexmk_callback_hooks = ['UpdateSkim']
+ function! UpdateSkim(status)
+   if !a:status | return | endif
+
+   let l:out = b:vimtex.out()
+   let l:cmd = [g:vimtex_view_general_viewer, '-r']
+   if !empty(system('pgrep Skim'))
+     call extend(l:cmd, ['-g'])
+   endif
+   if has('nvim')
+     call jobstart(l:cmd + [line('.'), l:out])
+   elseif has('job')
+     call job_start(l:cmd + [line('.'), l:out])
+   else
+     call system(join(l:cmd + [line('.'), shellescape(l:out)], ' '))
+   endif
+endfunction
