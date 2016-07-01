@@ -27,12 +27,12 @@ set index_format="%4C %Z %D %-25.25L %s %?M?(%M)?"
 # Sidebar
 	set sidebar_width	= 25
 	set sidebar_visible	= yes
-	set sort_sidebar        = unsorted
 	color sidebar_new yellow default
 	bind index <left> sidebar-prev
 	bind index <right> sidebar-next
 	bind index <space> sidebar-open
-	bind index <Esc>S sidebar-toggle
+	macro index <esc>S ‘<enter-command>toggle sidebar_visible<enter><refresh>’
+	macro pager <esc>S ‘<enter-command>toggle sidebar_visible<enter><redraw-screen>’
 
 # Navigation Macros
 # We need the move2inbox tag for the smooth
